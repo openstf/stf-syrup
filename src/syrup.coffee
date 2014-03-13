@@ -5,6 +5,7 @@ class Syrup
   constructor: ->
     @body = null
     @drops = []
+    @resolved = null
 
   define: (@body) ->
     this
@@ -18,9 +19,12 @@ class Syrup
     this
 
   consume: ->
-    Promise.all @drops.map (drop) -> drop.consume()
-      .then (results) =>
-        this.invoke.apply this, results
+    if @resolved
+      @resolved
+    else
+      @resolved = Promise.all @drops.map (drop) -> drop.consume()
+        .then (results) =>
+          this.invoke.apply this, results
 
   invoke: ->
     Assert @body, "Unable to `.invoke()` before setting body via `.define()`"

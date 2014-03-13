@@ -81,6 +81,11 @@ describe 'Syrup', ->
       main.define ->
       expect(main.consume()).to.be.an.instanceOf Promise
 
+    it "should always return the same Promise", ->
+      main = syrup()
+      main.define ->
+      expect(main.consume()).to.equal main.consume()
+
     it "should consume all dependencies", ->
       dep1 = syrup()
         .define ->
