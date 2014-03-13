@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "bluebird": "~1.1.0",
-    "coffee-script": "~1.7.1"
+    "coffee-script": "~1.7.1",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
     "gulp": "~3.5.5",

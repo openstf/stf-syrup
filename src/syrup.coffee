@@ -1,8 +1,10 @@
 Assert = require 'assert'
+
 Promise = require 'bluebird'
+_ = require 'lodash'
 
 class Syrup
-  constructor: ->
+  constructor: (@options = {}) ->
     @body = null
     @dependencies = []
     @resolved = null
@@ -10,27 +12,29 @@ class Syrup
   define: (@body) ->
     this
 
-  dependency: (drop) ->
-    Assert drop, "Dependency is undefined; perhaps the module is missing
+  dependency: (dep) ->
+    Assert dep, "Dependency is undefined; perhaps the module is missing
       module.exports?"
-    Assert drop.consume, "Dependency is missing `.consume()` method. Perhaps
+    Assert dep.consume, "Dependency is missing `.consume()` method. Perhaps
       it's not a Syrup module?"
-    @dependencies.push drop
+    @dependencies.push dep
     this
 
-  consume: ->
+  consume: (overrides) ->
     if @resolved
       @resolved
     else
-      @resolved = Promise.all @dependencies.map (drop) -> drop.consume()
+      @resolved = Promise.all @dependencies.map (dep) -> dep.consume overrides
         .then (results) =>
+          results.unshift overrides
           this.invoke.apply this, results
 
-  invoke: ->
+  invoke: (overrides = {}, args...) ->
     Assert @body, "Unable to `.invoke()` before setting body via `.define()`"
-    @body.apply null, arguments
+    args.unshift _.defaults overrides, @options
+    @body.apply null, args
 
-module.exports = ->
-  new Syrup
+module.exports = (options) ->
+  new Syrup options
 
 module.exports.Syrup = Syrup
