@@ -29,10 +29,10 @@
   },
   "dependencies": {
     "bluebird": "~1.1.0",
-    "coffee-script": "~1.7.1",
     "lodash": "~2.4.1"
   },
   "devDependencies": {
+    "coffee-script": "~1.7.1",
     "gulp": "~3.5.5",
     "gulp-coffee": "~1.4.1",
     "gulp-clean": "~0.2.4",
