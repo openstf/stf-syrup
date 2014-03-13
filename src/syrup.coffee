@@ -4,7 +4,7 @@ Promise = require 'bluebird'
 class Syrup
   constructor: ->
     @body = null
-    @drops = []
+    @dependencies = []
     @resolved = null
 
   define: (@body) ->
@@ -15,14 +15,14 @@ class Syrup
       module.exports?"
     Assert drop.consume, "Dependency is missing `.consume()` method. Perhaps
       it's not a Syrup module?"
-    @drops.push drop
+    @dependencies.push drop
     this
 
   consume: ->
     if @resolved
       @resolved
     else
-      @resolved = Promise.all @drops.map (drop) -> drop.consume()
+      @resolved = Promise.all @dependencies.map (drop) -> drop.consume()
         .then (results) =>
           this.invoke.apply this, results
 

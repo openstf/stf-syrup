@@ -41,14 +41,14 @@ describe 'Syrup', ->
       main = syrup()
       dep = syrup()
       main.dependency dep
-      expect(main.drops).to.eql [dep]
+      expect(main.dependencies).to.eql [dep]
 
     it "should add unknown dependency with consume method", ->
       main = syrup()
       dep =
         consume: ->
       main.dependency dep
-      expect(main.drops).to.eql [dep]
+      expect(main.dependencies).to.eql [dep]
 
     it "should return the Syrup instance", ->
       main = syrup()
