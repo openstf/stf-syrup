@@ -1,0 +1,47 @@
+{
+  "name": "syrup",
+  "version": "0.0.0",
+  "description": "Promise-based, configuration-less dependency injection.",
+  "keywords": [
+    "promise",
+    "di",
+    "dependency",
+    "injection"
+  ],
+  "bugs": {
+    "url": "https://github.com/CyberAgent/syrup/issues"
+  },
+  "license": "Apache-2.0",
+  "author": {
+    "name": "CyberAgent, Inc.",
+    "email": "npm@cyberagent.co.jp",
+    "url": "http://www.cyberagent.co.jp/"
+  },
+  "main": "./index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CyberAgent/syrup.git"
+  },
+  "scripts": {
+    "postpublish": "gulp postpublish --require coffee-script/register",
+    "prepublish": "gulp prepublish --require coffee-script/register",
+    "test": "gulp test --require coffee-script/register"
+  },
+  "dependencies": {
+    "bluebird": "~1.1.0",
+    "coffee-script": "~1.7.1"
+  },
+  "devDependencies": {
+    "gulp": "~3.5.5",
+    "gulp-coffee": "~1.4.1",
+    "gulp-clean": "~0.2.4",
+    "gulp-mocha": "~0.4.1",
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0",
+    "sinon": "~1.9.0",
+    "sinon-chai": "~2.5.0"
+  },
+  "engines": {
+    "node": ">= 0.10"
+  }
+}
