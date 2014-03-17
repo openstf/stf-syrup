@@ -4,10 +4,7 @@ sinon = require 'sinon'
 chai.use require 'sinon-chai'
 {expect} = chai
 
-syrup = require '../src/syrup'
-
-describe 'Syrup', ->
-
+tests = (syrup) -> ->
   it "should export the Syrup class via .Syrup property", ->
     expect(syrup.Syrup).to.be.a 'function'
 
@@ -136,8 +133,9 @@ describe 'Syrup', ->
       spy1 = sinon.spy dep1, 'consume'
       spy2 = sinon.spy dep2, 'consume'
       main.consume()
-      expect(spy1).to.have.been.calledOnce
-      expect(spy2).to.have.been.calledOnce
+      setImmediate ->
+        expect(spy1).to.have.been.calledOnce
+        expect(spy2).to.have.been.calledOnce
 
     it "should wait for body promise to resolve", ->
       resolver = Promise.defer()
@@ -244,3 +242,6 @@ describe 'Syrup', ->
       resolver2.resolve(2)
       setImmediate ->
         expect(spy).to.have.been.calledWith opts, 1, 2
+
+describe 'ParallelSyrup', tests require '../src/parallel'
+describe 'SerialSyrup', tests require '../src/serial'
