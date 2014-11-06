@@ -1,5 +1,5 @@
 {
-  "name": "syrup",
+  "name": "stf-syrup",
   "version": "0.0.1",
   "description": "Promise-based, configuration-less dependency injection.",
   "keywords": [
