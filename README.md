@@ -54,3 +54,13 @@ describe('archive', function() {
 
 })
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+See [LICENSE](LICENSE).
+
+Copyright © CyberAgent, Inc. All Rights Reserved.
