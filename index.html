@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Stf-syrup by openstf</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Stf-syrup</h1>
+      <h2 class="project-tagline">Provides a minimal Promise-based dependency injection framework for Node.js.</h2>
+      <a href="https://github.com/openstf/stf-syrup" class="btn">View on GitHub</a>
+      <a href="https://github.com/openstf/stf-syrup/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/openstf/stf-syrup/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="syrup" class="anchor" href="#syrup" aria-hidden="true"><span class="octicon octicon-link"></span></a>syrup</h1>
+
+<p><strong>Syrup</strong> is an extremely simple <a href="http://promises-aplus.github.io/promises-spec/">Promise</a>-based Dependency Injection framework (or rather, a library) for <a href="http://nodejs.org">Node.js</a>. While many related efforts already exist, Syrup attempts to break the mold by focusing on a single feature (dependency resolution) and relying on Node.js for the rest.</p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Configuration-free. No need to set up configuration files just to get up and running.</li>
+<li>Magic-free module loader. It's just <code>require()</code> and you'll be the one calling it (i.e. you have full control).</li>
+<li>
+<a href="http://promises-aplus.github.io/promises-spec/">Promise</a>-only.</li>
+<li>
+<a href="#mockability">Mock-friendly</a>. Invoke modules with mock dependencies for easy testing.</li>
+<li>Non-intrusive. You can use Syrup in just one part of your app.</li>
+<li>Runs in parallel with an optional serial mode.</li>
+</ul>
+
+<h2>
+<a id="mockability" class="anchor" href="#mockability" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mockability</h2>
+
+<p>Much like in <a href="https://github.com/c9/architect">Architect</a>, you can invoke modules directly by passing your own mock dependencies to them.</p>
+
+<p><strong>archive.js</strong></p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> syrup <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>syrup<span class="pl-pds">'</span></span>)
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> syrup()
+  .dependency(<span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>./box<span class="pl-pds">'</span></span>))
+  .define(<span class="pl-k">function</span>(<span class="pl-smi">options</span>, <span class="pl-smi">box</span>) {
+    <span class="pl-k">return</span> {
+      <span class="pl-en">store</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">thing</span>) {
+        <span class="pl-k">return</span> box.put(thing)
+      }
+    }
+  })</pre></div>
+
+<p><strong>archive-test.js</strong></p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> sinon <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>sinon<span class="pl-pds">'</span></span>)
+<span class="pl-k">var</span> chai <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>chai<span class="pl-pds">'</span></span>)
+chai.use <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>sinon-chai<span class="pl-pds">'</span></span>)
+vat expect <span class="pl-k">=</span> chai.expect
+
+<span class="pl-k">var</span> archive <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>./archive<span class="pl-pds">'</span></span>)
+
+describe(<span class="pl-s"><span class="pl-pds">'</span>archive<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>() {
+
+  it(<span class="pl-s"><span class="pl-pds">'</span>should put the thing in the box<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>() {
+    <span class="pl-k">var</span> mockBox <span class="pl-k">=</span> {
+      put<span class="pl-k">:</span> sinon.spy()
+    }
+    <span class="pl-k">var</span> treasure <span class="pl-k">=</span> <span class="pl-c1">42</span>
+    archive.invoke(<span class="pl-c1">null</span>, mockBox).store(treasure)
+    expect(mockBox.put).to.have.been.calledWith(treasure)
+  })
+
+})</pre></div>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>See <a href="LICENSE">LICENSE</a>.</p>
+
+<p>Copyright © CyberAgent, Inc. All Rights Reserved.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/openstf/stf-syrup">Stf-syrup</a> is maintained by <a href="https://github.com/openstf">openstf</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-64458786-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
+
