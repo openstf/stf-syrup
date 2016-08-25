@@ -37,7 +37,7 @@ module.exports = syrup()
 var sinon = require('sinon')
 var chai = require('chai')
 chai.use require('sinon-chai')
-vat expect = chai.expect
+var expect = chai.expect
 
 var archive = require('./archive')
 
