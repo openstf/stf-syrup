@@ -1,3 +1,9 @@
+# Warning
+
+# This project along with other ones in [OpenSTF](https://github.com/openstf) organisation is provided as is for community, without active development.
+# You can check any other forks that may be actively developed and offer new/different features [here](https://github.com/openstf/stf/network).
+# Active development has been moved to [DeviceFarmer](https://github.com/DeviceFarmer) organisation.
+
 # syrup
 
 **Syrup** is an extremely simple [Promise](http://promises-aplus.github.io/promises-spec/)-based Dependency Injection framework (or rather, a library) for [Node.js](http://nodejs.org). While many related efforts already exist, Syrup attempts to break the mold by focusing on a single feature (dependency resolution) and relying on Node.js for the rest.
