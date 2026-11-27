@@ -1,4 +1,7 @@
+/*.tgz
 /node_modules/
-/lib/
 /temp/
+/lib/**/*.d.ts
+/lib/**/*.js
 /index.js
+/index.d.ts

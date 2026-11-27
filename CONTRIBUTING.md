@@ -7,7 +7,7 @@ We are happy to accept any contributions that make sense and respect the rules l
 1. Fork the repo.
 2. Create a feature branch for your contribution out of the `master` branch. Only one contribution per branch is accepted.
 3. Implement your contribution while respecting our rules (see below).
-4. Run `npm test` to make sure you didn't break anything.
+4. Run `npm run lint` and `npm test` to make sure you didn't break anything. The tests run against the compiled JavaScript, so `npm test` compiles first. You need [Node.js](https://nodejs.org/) 22.18 or newer, the first 22.x that strips types from the `.mts` tests by default; the published package itself runs on any Node.js 22. CI runs both on every pull request.
 5. Add tests for your contribution so that no one else will break it.
 6. Submit a pull request against our `master` branch!
 
@@ -16,10 +16,18 @@ We are happy to accept any contributions that make sense and respect the rules l
 * **Do** use feature branches.
 * **Do** conform to existing coding style so that your contribution fits in.
 * **Do** use [EditorConfig](http://editorconfig.org/) to enforce our [whitespace rules](.editorconfig). If your editor is not supported, enforce the settings manually.
-* **Do** run `npm test` for CoffeeLint, JSONLint and unit test coverage.
+* **Do** run `npm run format` to fix the formatting with Prettier and ESLint.
 * **Do not** touch the `version` field in [package.json](package.json).
 * **Do not** commit any generated files, unless already in the repo. If absolutely necessary, explain why.
-* **Do not** create any top level files or directories. If absolutely necessary, explain why and update [.npmignore](.npmignore).
+* **Do not** create any top level files or directories. If absolutely necessary, explain why and update the `files` list in [package.json](package.json) if it has to be published.
+
+## Releasing
+
+Releases are cut with GitHub Actions:
+
+1. Run the `Prepare release` workflow on `master` with the new version. It bumps `package.json`, adds the release notes to [CHANGELOG.md](CHANGELOG.md) and pushes a `release/v<version>` branch.
+2. Open a pull request for that branch, label it `ignore-for-release` and merge it once the checks pass.
+3. Run the `Release` workflow on `master` with the same version. It tags the release, creates the GitHub release and publishes to npm with trusted publishing.
 
 ## License
 

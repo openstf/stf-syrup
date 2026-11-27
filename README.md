@@ -16,6 +16,59 @@
 * [Mock-friendly](#mockability). Invoke modules with mock dependencies for easy testing.
 * Non-intrusive. You can use Syrup in just one part of your app.
 * Runs in parallel with an optional serial mode.
+* Ships TypeScript declarations.
+
+## Requirements
+
+* [Node.js](https://nodejs.org/) 22 or newer. Older versions are not supported.
+
+## Getting started
+
+Install via NPM:
+
+```bash
+npm install --save @devicefarmer/stf-syrup
+```
+
+A module declares its dependencies with `.dependency()` and its body with `.define()`. The body receives the options followed by the value of every dependency, in the order the dependencies were added:
+
+```javascript
+var syrup = require('@devicefarmer/stf-syrup')
+
+var box = syrup()
+  .define(function(options) {
+    return {
+      put: function(thing) {
+        return Promise.resolve(thing)
+      }
+    }
+  })
+
+module.exports = syrup({size: 'large'})
+  .dependency(box)
+  .define(function(options, box) {
+    return box
+  })
+```
+
+`.consume(options)` resolves every dependency, then calls the body and returns a native `Promise` of whatever the body returns (awaited if it is itself a promise). Each module is consumed only once: a module that several others depend on runs once and they all share its value, and every later `.consume()` returns the same promise, whatever options it is given. The options are filled in with the module's default options, the ones given to `syrup()`.
+
+`syrup()` consumes the dependencies in parallel. `syrup.serial()` consumes them one at a time, each one once the previous one has resolved.
+
+### TypeScript
+
+The package is written in TypeScript and ships its declarations. `syrup.Syrup<T>` is the type of a module whose `.consume()` resolves to `T`, and `.define()` infers `T` from the body:
+
+```typescript
+import syrup from '@devicefarmer/stf-syrup'
+
+const answer = syrup.serial().define((options: {base: number}) => options.base + 41)
+// answer.consume() is a Promise<number>, and answer is a syrup.Syrup<number>
+```
+
+### Upgrading from 1.x
+
+`.consume()` used to return a [bluebird](https://github.com/petkaantonov/bluebird) 1.x promise and now returns a native `Promise`. Code that called bluebird-only methods on the result, such as `.spread()`, `.tap()` or `.isFulfilled()`, has to change. As with any native promise, a rejection that nothing handles now makes Node.js exit instead of being logged.
 
 ## Mockability
 
@@ -24,7 +77,7 @@ Much like in [Architect](https://github.com/c9/architect), you can invoke module
 **archive.js**
 
 ```javascript
-var syrup = require('syrup')
+var syrup = require('@devicefarmer/stf-syrup')
 
 module.exports = syrup()
   .dependency(require('./box'))
@@ -42,7 +95,7 @@ module.exports = syrup()
 ```javascript
 var sinon = require('sinon')
 var chai = require('chai')
-chai.use require('sinon-chai')
+chai.use(require('sinon-chai'))
 var expect = chai.expect
 
 var archive = require('./archive')
